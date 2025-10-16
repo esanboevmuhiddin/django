@@ -1,0 +1,103 @@
+{% extends 'primer_auto/base.html' %}
+
+{% block content %}
+
+<section class="hero-section text-center">
+    <div class="container">
+        <h1 class="display-4 fw-bold mb-4">Primer-Auto</h1>
+        <p class="lead mb-4">Подберем и привезем для вас идеальный авто из США, Кореи, Китая и Европы без рисков</p>
+        <a href="{% url 'create_order' %}" class="btn btn-primary btn-lg me-3">Оставить заявку</a>
+        <a href="{% url 'catalog' %}" class="btn btn-outline-light btn-lg">Смотреть каталог</a>
+    </div>
+</section>
+
+<section class="py-5">
+    <div class="container">
+        <div class="row text-center">
+            <div class="col-md-3 mb-4">
+                <div class="feature-icon mb-3">🚗</div>
+                <h4>Авто из-за рубежа</h4>
+                <p>США, Корея, Китай, Европа - широкий выбор</p>
+            </div>
+            <div class="col-md-3 mb-4">
+                <div class="feature-icon mb-3">💰</div>
+                <h4>Экономия до 40%</h4>
+                <p>Прямые поставки без посредников</p>
+            </div>
+            <div class="col-md-3 mb-4">
+                <div class="feature-icon mb-3">🛡️</div>
+                <h4>Без рисков</h4>
+                <p>Полная юридическая поддержка</p>
+            </div>
+            <div class="col-md-3 mb-4">
+                <div class="feature-icon mb-3">🚚</div>
+                <h4>Под ключ</h4>
+                <p>От подбора до постановки на учет</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="bg-light py-5">
+    <div class="container">
+        <h2 class="text-center mb-5">Последние заявки</h2>
+        <div class="row">
+            {% for order in recent_orders %}
+            <div class="col-md-4 mb-4">
+                <div class="card order-card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ order.desired_model }}</h5>
+                        <p class="card-text">
+                            <strong>Бюджет:</strong> ${{ order.budget_max }}<br>
+                            <strong>Год:</strong> {{ order.year_min }}-{{ order.year_max }}
+                        </p>
+                        <span class="badge bg-{% if order.status == 'completed' %}success{% elif order.status == 'cancelled' %}danger{% else %}warning{% endif %}">
+                            {{ order.get_status_display }}
+                        </span>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-12 text-center">
+                <p class="text-muted">Пока нет заявок</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<section class="py-5">
+    <div class="container">
+        <h2 class="text-center mb-5">Отзывы клиентов</h2>
+        <div class="row">
+            {% for review in reviews %}
+            <div class="col-md-4 mb-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" 
+                                 style="width: 40px; height: 40px;">
+                                {{ review.client.full_name|first }}
+                            </div>
+                            <div class="ms-3">
+                                <h6 class="mb-0">{{ review.client.full_name }}</h6>
+                                <small class="text-muted">{{ review.review_date|date:"d.m.Y" }}</small>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            {% for i in "12345" %}
+                                <i class="fas fa-star{% if forloop.counter > review.rating %}-o text-muted{% else %} text-warning{% endif %}"></i>
+                            {% endfor %}
+                        </div><p class="card-text">{{ review.review_text|truncatewords:30 }}</p>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-12 text-center">
+                <p class="text-muted">Пока нет отзывов</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}
