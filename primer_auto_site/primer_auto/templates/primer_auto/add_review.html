@@ -1,0 +1,72 @@
+{% extends 'primer_auto/base.html' %}
+
+{% block title %}Добавить отзыв - Primer-Auto{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-header bg-success text-white">
+                    <h4 class="mb-0">Добавить отзыв к заказу #{{ order.id }}</h4>
+                </div>
+                <div class="card-body">
+                    <div class="alert alert-info">
+                        <h6>Информация о заказе:</h6>
+                        <p class="mb-0">
+                            <strong>Модель:</strong> {{ order.desired_model }}<br>
+                            <strong>Дата создания:</strong> {{ order.created_date|date:"d.m.Y" }}
+                        </p>
+                    </div>
+
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        
+                        <div class="mb-3">
+                            <label for="{{ form.rating.id_for_label }}" class="form-label">{{ form.rating.label }}</label>
+                            {{ form.rating }}
+                            {% if form.rating.errors %}
+                            <div class="text-danger small">{{ form.rating.errors }}</div>
+                            {% endif %}
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="{{ form.review_text.id_for_label }}" class="form-label">{{ form.review_text.label }}</label>
+                            {{ form.review_text }}
+                            {% if form.review_text.errors %}
+                            <div class="text-danger small">{{ form.review_text.errors }}</div>
+                            {% endif %}
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="{{ form.photo.id_for_label }}" class="form-label">{{ form.photo.label }}</label>
+                            {{ form.photo }}
+                            {% if form.photo.errors %}
+                            <div class="text-danger small">{{ form.photo.errors }}</div>
+                            {% endif %}
+                            <div class="form-text">Вы можете загрузить фото вашего автомобиля (необязательно)</div>
+                        </div>
+
+                        <div class="mt-4">
+                            <button type="submit" class="btn btn-success btn-lg w-100">
+                                📝 Опубликовать отзыв
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="card mt-4">
+                <div class="card-body">
+                    <h5>Почему ваш отзыв важен?</h5>
+                    <ul>
+                        <li>Помогает другим клиентам принять верное решение</li>
+                        <li>Мотивирует нас становиться лучше</li>
+                        <li>Создает сообщество довольных клиентов</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

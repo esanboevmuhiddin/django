@@ -1,0 +1,138 @@
+{% extends 'primer_auto/base.html' %}
+
+{% block title %}Заявка #{{ order.id }} - Primer-Auto{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                    <h4 class="mb-0">Заявка #{{ order.id }}</h4>
+                    <span class="badge bg-{% if order.status == 'completed' %}success{% elif order.status == 'cancelled' %}danger{% else %}warning{% endif %}">
+                        {{ order.get_status_display }}
+                    </span>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6>Клиент</h6>
+                            <p>{{ order.client.full_name }}<br>
+                               {{ order.client.phone }}<br>
+                               {{ order.client.email }}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <h6>Менеджер</h6>
+                            <p>
+                                {% if order.manager %}
+                                    {{ order.manager.full_name }}<br>
+                                    {{ order.manager.phone }}
+                                {% else %}
+                                    <span class="text-muted">Не назначен</span>
+                                {% endif %}
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <hr>
+                    
+                    <h6>Параметры авто</h6>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <strong>Модель:</strong><br>
+                            {{ order.desired_model }}
+                        </div>
+                        <div class="col-md-4">
+                            <strong>Год:</strong><br>
+                            {{ order.year_min }} - {{ order.year_max }}
+                        </div>
+                        <div class="col-md-4">
+                            <strong>Бюджет:</strong><br>
+                            ${{ order.budget_max }}
+                        </div>
+                    </div>
+                    
+                    {% if order.additional_wishes %}
+                    <div class="mt-3">
+                        <strong>Дополнительные пожелания:</strong><br>
+                        {{ order.additional_wishes }}
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            {% if cars %}
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">Подобранные автомобили</h5>
+                </div>
+                <div class="card-body">
+                    {% for car in cars %}
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <div class="row">
+                                {% if car.photo %}
+                                <div class="col-md-3">
+                                    <img src="{{ car.photo.url }}" class="img-fluid rounded" alt="{{ car.brand }} {{ car.model }}">
+                                </div>
+                                {% endif %}
+                                <div class="col-md-{% if car.photo %}9{% else %}12{% endif %}">
+                                    <h6>{{ car.brand }} {{ car.model }} {{ car.year }}</h6>
+                                    <p class="mb-1"><strong>Лот:</strong> {{ car.lot_number }}</p>
+                                    <p class="mb-1"><strong>VIN:</strong> {{ car.vin }}</p>
+                                    <p class="mb-1"><strong>Страна:</strong> {{ car.get_auction_country_display }}</p>
+                                    <p class="mb-0"><strong>Текущая ставка:</strong> ${{ car.current_bid }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+        </div>
+
+        <div class="col-lg-4">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">Действия</h5>
+                </div>
+                <div class="card-body">
+                    <div class="d-grid gap-2">
+                        <a href="{% url 'order_tracking' order.id %}" class="btn btn-outline-primary">
+                            📊 Отслеживание заказа
+                        </a>
+                        {% if not has_review and order.status == 'completed' %}
+                        <a href="{% url 'add_review' order.id %}" class="btn btn-outline-success">
+                            ⭐ Оставить отзыв
+                        </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            {% if payments %}
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">Платежи</h5>
+                </div>
+                <div class="card-body">
+                    {% for payment in payments %}
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <div>
+                            <strong>{{ payment.get_payment_type_display }}</strong><br>
+                            <small>${{ payment.amount }}</small>
+                        </div>
+                        <span class="badge bg-{% if payment.is_paid %}success{% else %}warning{% endif %}">
+                            {% if payment.is_paid %}Оплачен{% else %}Ожидает оплаты{% endif %}
+                        </span>
+                    </div>
+                    {% if not forloop.last %}<hr>{% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

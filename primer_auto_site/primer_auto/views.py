@@ -15,7 +15,7 @@ def index(request):
         'reviews': reviews,
         'completed_orders': completed_orders,
     }
-    return render(request, 'primer_auto/index.html', context)
+    return render(request, 'primer_auto/base.html', context)
 
 def create_order(request):
     """Создание новой заявки"""
@@ -25,9 +25,9 @@ def create_order(request):
         
         if client_form.is_valid() and order_form.is_valid():
             try:
-                # Сохраняем клиента
+                
                 client = client_form.save()
-                # Сохраняем заявку, привязывая к клиенту
+                
                 order = order_form.save(commit=False)
                 order.client = client
                 order.save()
@@ -54,8 +54,7 @@ def order_detail(request, order_id):
     cars = Car.objects.filter(order=order)
     stages = OrderStage.objects.filter(order=order)
     payments = Payment.objects.filter(order=order)
-    
-    # Проверяем, есть ли отзыв для этого заказа
+   
     has_review = Review.objects.filter(order=order).exists()
     
     context = {
@@ -71,8 +70,7 @@ def order_tracking(request, order_id):
     """Отслеживание заказа для клиента"""
     order = get_object_or_404(Order, id=order_id)
     stages = OrderStage.objects.filter(order=order).order_by('updated_date')
-    
-    # Рассчитываем прогресс
+
     total_stages = stages.count()
     completed_stages = stages.filter(is_completed=True).count()
     progress = int((completed_stages / total_stages) * 100) if total_stages > 0 else 0
@@ -88,7 +86,7 @@ def add_review(request, order_id):
     """Добавление отзыва к заказу"""
     order = get_object_or_404(Order, id=order_id)
     
-    # Проверяем, есть ли уже отзыв для этого заказа
+
     if Review.objects.filter(order=order).exists():
         messages.warning(request, 'Отзыв для этого заказа уже существует')
         return redirect('order_detail', order_id=order.id)
@@ -114,7 +112,7 @@ def add_review(request, order_id):
 def catalog(request):
     """Каталог подобранных автомобилей"""
     cars = Car.objects.all().order_by('-year')
-    # Фильтрация
+   
     brand = request.GET.get('brand')
     country = request.GET.get('country')
     year_min = request.GET.get('year_min')
@@ -128,8 +126,7 @@ def catalog(request):
         cars = cars.filter(year__gte=year_min)
     if year_max:
         cars = cars.filter(year__lte=year_max)
-    
-    # Получаем уникальные бренды для фильтра
+  
     brands = Car.objects.values_list('brand', flat=True).distinct()
     
     context = {
@@ -149,3 +146,15 @@ def about(request):
 def contacts(request):
     """Страница контактов"""
     return render(request, 'primer_auto/contacts.html')
+
+def home(request):
+    """Главная страница"""
+  
+    recent_orders = Order.objects.filter(status='completed')[:3]
+    reviews = Review.objects.all()[:3]
+    
+    context = {
+        'recent_orders': recent_orders,
+        'reviews': reviews,
+    }
+    return render(request, 'primer_auto/home.html', context)

@@ -1,0 +1,88 @@
+{% extends 'primer_auto/base.html' %}
+
+{% block title %}Контакты - Primer-Auto{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-lg-8 mx-auto">
+            <h1 class="text-center mb-5">Контакты</h1>
+            
+            <div class="row">
+                <div class="col-md-6 mb-4">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">📞 Телефоны</h5>
+                            <p class="card-text">
+                                <strong>Основной:</strong> +7 (999) 123-45-67<br>
+                                <strong>WhatsApp/Telegram:</strong> +7 (999) 123-45-68<br>
+                                <small class="text-muted">Ежедневно с 9:00 до 21:00</small>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-6 mb-4">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">📧 Электронная почта</h5>
+                            <p class="card-text">
+                                <strong>Общие вопросы:</strong> info@primer-auto.ru<br>
+                                <strong>Техподдержка:</strong> support@primer-auto.ru<br>
+                                <strong>Партнерство:</strong> partner@primer-auto.ru
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-6 mb-4">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">📍 Адрес офиса</h5>
+                            <p class="card-text">
+                                г. Москва, ул. Примерная, д. 123<br>
+                                Бизнес-центр "Примерный"<br>
+                                <small class="text-muted">Пн-Пт: 10:00-19:00</small>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-6 mb-4">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">💬 Мессенджеры</h5>
+                            <p class="card-text">
+                                <strong>Telegram:</strong> @primer_auto<br>
+                                <strong>WhatsApp:</strong> +7 (999) 123-45-68<br>
+                                <strong>Viber:</strong> +7 (999) 123-45-67
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card mt-4">
+                <div class="card-body">
+                    <h5 class="card-title">Форма обратной связи</h5>
+                    <form>
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Ваше имя</label>
+                            <input type="text" class="form-control" id="name" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="phone" class="form-label">Телефон</label>
+                            <input type="tel" class="form-control" id="phone" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="message" class="form-label">Сообщение</label>
+                            <textarea class="form-control" id="message" rows="4" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Отправить сообщение</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

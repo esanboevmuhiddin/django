@@ -1,0 +1,86 @@
+{% extends 'primer_auto/base.html' %}
+
+{% block title %}Каталог авто - Primer-Auto{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1 class="text-center mb-5">Каталог автомобилей</h1>
+    
+    <div class="card mb-4">
+        <div class="card-body">
+            <h5 class="card-title">Фильтры поиска</h5>
+            <form method="get" class="row g-3">
+                <div class="col-md-3">
+                    <label class="form-label">Марка</label>
+                    <input type="text" name="brand" class="form-control" placeholder="Например: Toyota" 
+                           value="{{ selected_brand }}">
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">Страна</label>
+                    <select name="country" class="form-select">
+                        <option value="">Все страны</option>
+                        <option value="usa" {% if selected_country == 'usa' %}selected{% endif %}>США</option>
+                        <option value="korea" {% if selected_country == 'korea' %}selected{% endif %}>Корея</option>
+                        <option value="china" {% if selected_country == 'china' %}selected{% endif %}>Китай</option>
+                        <option value="europe" {% if selected_country == 'europe' %}selected{% endif %}>Европа</option>
+                        <option value="japan" {% if selected_country == 'japan' %}selected{% endif %}>Япония</option>
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label">Год от</label>
+                    <input type="number" name="year_min" class="form-control" placeholder="1990"
+                           value="{{ selected_year_min }}">
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label">Год до</label>
+                    <input type="number" name="year_max" class="form-control" placeholder="2024"
+                           value="{{ selected_year_max }}">
+                </div>
+                <div class="col-md-2 d-flex align-items-end">
+                    <button type="submit" class="btn btn-primary w-100">Найти</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="row">
+        {% for car in cars %}
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card h-100 order-card">
+                {% if car.photo %}
+                <img src="{{ car.photo.url }}" class="card-img-top" alt="{{ car.brand }} {{ car.model }}" 
+                     style="height: 200px; object-fit: cover;">
+                {% else %}
+                <div class="card-img-top bg-light d-flex align-items-center justify-content-center" 
+                     style="height: 200px;">
+                    <span class="text-muted">Нет фото</span>
+                </div>
+                {% endif %}
+                
+                <div class="card-body">
+                    <h5 class="card-title">{{ car.brand }} {{ car.model }} {{ car.year }}</h5>
+                    <p class="card-text">
+                        <strong>Лот:</strong> {{ car.lot_number }}<br>
+                        <strong>VIN:</strong> {{ car.vin }}<br>
+                        <strong>Страна:</strong> {{ car.get_auction_country_display }}<br>
+                        <strong>Текущая ставка:</strong> ${{ car.current_bid }}
+                    </p>
+                </div>
+                <div class="card-footer">
+                    <small class="text-muted">Заявка #{{ car.order.id }}</small>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12 text-center">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Автомобили не найдены</h5>
+                    <p class="card-text">Попробуйте изменить параметры фильтра</p>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
