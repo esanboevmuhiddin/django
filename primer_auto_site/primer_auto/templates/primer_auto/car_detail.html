@@ -1,0 +1,107 @@
+{% extends 'primer_auto/base.html' %}
+
+{% block title %}{{ car.brand }} {{ car.model }} {{ car.year }} - Primer-Auto{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="card mb-4">
+                {% if car.photo %}
+                <img src="{{ car.photo.url }}" class="card-img-top" alt="{{ car.brand }} {{ car.model }}" 
+                     style="max-height: 400px; object-fit: cover;">
+                {% endif %}
+                <div class="card-body">
+                    <h2 class="card-title">{{ car.brand }} {{ car.model }} {{ car.year }}</h2>
+                    
+                    <div class="row mt-4">
+                        <div class="col-md-6">
+                            <h5>Основная информация</h5>
+                            <ul class="list-unstyled">
+                                <li><strong>Марка:</strong> {{ car.brand }}</li>
+                                <li><strong>Модель:</strong> {{ car.model }}</li>
+                                <li><strong>Год выпуска:</strong> {{ car.year }}</li>
+                                <li><strong>Страна аукциона:</strong> {{ car.get_auction_country_display }}</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <h5>Аукционная информация</h5>
+                            <ul class="list-unstyled">
+                                <li><strong>Номер лота:</strong> {{ car.lot_number }}</li>
+                                <li><strong>VIN номер:</strong> {{ car.vin }}</li>
+                                <li><strong>Текущая ставка:</strong> ${{ car.current_bid }}</li>
+                                <li><strong>Статус:</strong> 
+                                    <span class="badge bg-primary">
+                                        {% if car.current_bid > 0 %}Активный аукцион{% else %}Ожидание торгов{% endif %}
+                                    </span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    {% if car.order %}
+                    <div class="mt-4">
+                        <h5>Информация по заявке</h5>
+                        <div class="card">
+                            <div class="card-body">
+                                <p><strong>Номер заявки:</strong> #{{ car.order.id }}</p>
+                                <p><strong>Менеджер:</strong> 
+                                    {% if car.order.manager %}
+                                        {{ car.order.manager.full_name }}
+                                    {% else %}
+                                        <span class="text-muted">Не назначен</span>
+                                    {% endif %}
+                                </p>
+                                <p><strong>Статус заявки:</strong> 
+                                    <span class="badge bg-{% if car.order.status == 'completed' %}success{% elif car.order.status == 'cancelled' %}danger{% else %}warning{% endif %}">
+                                        {{ car.order.get_status_display }}
+                                    </span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-4">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">Действия</h5>
+                </div>
+                <div class="card-body">
+                    <div class="d-grid gap-2">
+                        <a href="{% url 'create_order' %}" class="btn btn-primary">
+                            <i class="fas fa-plus me-2"></i>Оставить заявку на подбор
+                        </a>
+                        <a href="{% url 'catalog' %}" class="btn btn-outline-primary">
+                            <i class="fas fa-arrow-left me-2"></i>Вернуться в каталог
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">Похожие автомобили</h5>
+                </div>
+                <div class="card-body">
+                    <p class="text-muted">Воспользуйтесь поиском в каталоге, чтобы найти похожие варианты:</p>
+                    <ul class="list-unstyled">
+                        <li><a href="{% url 'catalog' %}?brand={{ car.brand }}" class="text-decoration-none">
+                            <i class="fas fa-search me-2"></i>Все {{ car.brand }}
+                        </a></li>
+                        <li><a href="{% url 'catalog' %}?country={{ car.auction_country }}" class="text-decoration-none">
+                            <i class="fas fa-globe me-2"></i>Авто из {{ car.get_auction_country_display }}
+                        </a></li>
+                        <li><a href="{% url 'catalog' %}?year_min={{ car.year|add:'-2' }}&year_max={{ car.year|add:'2' }}" class="text-decoration-none">
+                            <i class="fas fa-calendar me-2"></i>Авто {{ car.year|add:'-2' }}-{{ car.year|add:'2' }} года
+                        </a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

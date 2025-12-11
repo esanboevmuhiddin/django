@@ -1,0 +1,182 @@
+.order-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+    border: 2px solid transparent;
+    cursor: pointer;
+    height: 100%;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.order-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    border-color: var(--primary-color);
+}
+
+.order-card .card-img-top {
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    height: 200px;
+    object-fit: cover;
+}
+
+.order-card:hover .card-img-top {
+    opacity: 0.9;
+    transform: scale(1.02);
+}
+
+.order-card .card-title {
+    color: var(--dark-color);
+    transition: color 0.3s ease;
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+.order-card:hover .card-title {
+    color: var(--primary-color);
+}
+
+.order-card .card-text {
+    color: var(--secondary-color);
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+.order-card .card-text strong {
+    color: var(--dark-color);
+    font-weight: 600;
+}
+
+.order-card .card-footer {
+    background-color: rgba(0, 0, 0, 0.03);
+    border-top: 1px solid rgba(0, 0, 0, 0.125);
+    padding: 0.75rem 1.25rem;
+}
+
+.order-card .card-footer small {
+    color: var(--secondary-color);
+    font-size: 0.85rem;
+}
+
+.order-card a {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+}
+
+.order-card a:hover {
+    text-decoration: none;
+}
+
+.catalog-filters {
+    background-color: white;
+    border-radius: 15px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.catalog-filters h5 {
+    color: var(--dark-color);
+    margin-bottom: 1.5rem;
+    font-weight: 600;
+}
+
+.catalog-filters .form-label {
+    font-weight: 600;
+    color: var(--dark-color);
+    margin-bottom: 0.5rem;
+}
+
+.catalog-filters .form-control,
+.catalog-filters .form-select {
+    border: 2px solid #e9ecef;
+    border-radius: 8px;
+    padding: 10px 15px;
+    transition: all 0.3s ease;
+}
+
+.catalog-filters .form-control:focus,
+.catalog-filters .form-select:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+}
+
+.catalog-filters .btn-primary {
+    padding: 10px 20px;
+    font-weight: 600;
+    border-radius: 8px;
+    background: linear-gradient(135deg, var(--primary-color), #0056b3);
+    border: none;
+    transition: all 0.3s ease;
+}
+
+.catalog-filters .btn-primary:hover {
+    background: linear-gradient(135deg, #0056b3, var(--primary-color));
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(13, 110, 253, 0.4);
+}
+
+.empty-catalog {
+    text-align: center;
+    padding: 3rem 0;
+}
+
+.empty-catalog .card {
+    border: none;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 15px;
+}
+
+.empty-catalog .card-title {
+    color: var(--secondary-color);
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+.empty-catalog .card-text {
+    color: var(--secondary-color);
+}
+
+.car-card-animation {
+    animation: fadeInUp 0.6s ease-out forwards;
+    opacity: 0;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@media (max-width: 768px) {
+    .order-card .card-img-top {
+        height: 180px;
+    }
+    
+    .catalog-filters .row > div {
+        margin-bottom: 1rem;
+    }
+    
+    .catalog-filters .btn-primary {
+        width: 100%;
+    }
+}
+
+@media (max-width: 576px) {
+    .order-card .card-img-top {
+        height: 160px;
+    }
+    
+    .order-card .card-title {
+        font-size: 1.1rem;
+    }
+    
+    .order-card .card-text {
+        font-size: 0.85rem;
+    }
+}

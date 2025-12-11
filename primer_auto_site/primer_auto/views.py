@@ -158,3 +158,17 @@ def home(request):
         'reviews': reviews,
     }
     return render(request, 'primer_auto/home.html', context)
+
+def car_detail(request, car_id):
+    """Детальная информация об автомобиле"""
+    car = get_object_or_404(Car, id=car_id)
+
+    similar_cars = Car.objects.filter(
+        brand=car.brand
+    ).exclude(id=car.id)[:3]
+    
+    context = {
+        'car': car,
+        'similar_cars': similar_cars,
+    }
+    return render(request, 'primer_auto/car_detail.html', context)

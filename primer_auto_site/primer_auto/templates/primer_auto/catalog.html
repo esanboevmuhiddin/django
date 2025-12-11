@@ -2,6 +2,10 @@
 
 {% block title %}Каталог авто - Primer-Auto{% endblock %}
 
+{% block extra_css %}
+    <link href="/static/css/catalog.css" rel="stylesheet">
+{% endblock %}
+
 {% block content %}
 <div class="container mt-4">
     <h1 class="text-center mb-5">Каталог автомобилей</h1>
@@ -47,24 +51,28 @@
         {% for car in cars %}
         <div class="col-lg-4 col-md-6 mb-4">
             <div class="card h-100 order-card">
-                {% if car.photo %}
-                <img src="{{ car.photo.url }}" class="card-img-top" alt="{{ car.brand }} {{ car.model }}" 
-                     style="height: 200px; object-fit: cover;">
-                {% else %}
-                <div class="card-img-top bg-light d-flex align-items-center justify-content-center" 
-                     style="height: 200px;">
-                    <span class="text-muted">Нет фото</span>
-                </div>
-                {% endif %}
+                <a href="{% url 'car_detail' car.id %}" class="text-decoration-none text-dark">
+                    {% if car.photo %}
+                    <img src="{{ car.photo.url }}" class="card-img-top" alt="{{ car.brand }} {{ car.model }}" 
+                         style="height: 200px; object-fit: cover;">
+                    {% else %}
+                    <div class="card-img-top bg-light d-flex align-items-center justify-content-center" 
+                         style="height: 200px;">
+                        <span class="text-muted">Нет фото</span>
+                    </div>
+                    {% endif %}
+                </a>
                 
                 <div class="card-body">
-                    <h5 class="card-title">{{ car.brand }} {{ car.model }} {{ car.year }}</h5>
-                    <p class="card-text">
-                        <strong>Лот:</strong> {{ car.lot_number }}<br>
-                        <strong>VIN:</strong> {{ car.vin }}<br>
-                        <strong>Страна:</strong> {{ car.get_auction_country_display }}<br>
-                        <strong>Текущая ставка:</strong> ${{ car.current_bid }}
-                    </p>
+                    <a href="{% url 'car_detail' car.id %}" class="text-decoration-none text-dark">
+                        <h5 class="card-title">{{ car.brand }} {{ car.model }} {{ car.year }}</h5>
+                        <p class="card-text">
+                            <strong>Лот:</strong> {{ car.lot_number }}<br>
+                            <strong>VIN:</strong> {{ car.vin }}<br>
+                            <strong>Страна:</strong> {{ car.get_auction_country_display }}<br>
+                            <strong>Текущая ставка:</strong> ${{ car.current_bid }}
+                        </p>
+                    </a>
                 </div>
                 <div class="card-footer">
                     <small class="text-muted">Заявка #{{ car.order.id }}</small>
